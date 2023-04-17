@@ -1,8 +1,14 @@
 package stayalive;
 
+import io.github.manusant.ss.SparkSwagger;
+import io.github.manusant.ss.conf.Options;
 import org.json.JSONObject;
+import spark.Service;
 import spark.Spark;
+import stayalive.endpoint.MessageEndpoint;
 import stayalive.filter.AuthFilter;
+
+import java.io.IOException;
 
 import static spark.Spark.port;
 
@@ -12,10 +18,21 @@ import static spark.Spark.port;
  */
 public class App 
 {
-    public static void main( String[] args )
-    {
-        Spark.port(8080);
+    public static void main( String[] args ) throws IOException {
+        Service spark = Service.ignite()
+                .ipAddress("0.0.0.0")
+                .port(8080);
 
+        Options options =  Options.defaultOptions()
+                .confPath(SparkSwagger.CONF_FILE_NAME)
+                .enableStaticMapping(true)
+                .version("1.0.2")
+                .build();
+
+        // Access to the doc: http://localhost:8080/index.html
+        SparkSwagger sparkSwagger = SparkSwagger.of(spark, options);
+        sparkSwagger.endpoint(new MessageEndpoint());
+        sparkSwagger.generateDoc();
 
         // Message
         Spark.get("/hello", (req, res) -> ("Hello World !"));
@@ -83,7 +100,6 @@ public class App
         // Private route
         Spark.before("/private", new AuthFilter());
         Spark.get("/private", (req, res) -> "Private route");
-
     }
 
 }

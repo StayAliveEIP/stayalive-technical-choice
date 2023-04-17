@@ -13,30 +13,23 @@ import static io.github.manusant.ss.rest.RestResponse.ok;
 
 public class MessageEndpoint implements Endpoint {
 
-    private static final String NAME_SPACE = "/hammer";
+    private static final String NAME_SPACE = "/message";
 
     @Override
     public void bind(final SparkSwagger restApi) {
 
-        restApi.endpoint(endpointPath(NAME_SPACE)
-                        .withDescription("Hammer REST API exposing all Thor utilities "), (q, a) -> {
-                        System.out.println("Hammer Endpoint");
-                })
-
-                .get(path("/message")
-                        .withDescription("Gets the whole Network")
-                        .withSecurity("thor_api_key")
-                        .withHeaderParam().withName("x-export-kpi").withDescription("Export KPI Header").withRequired(true)
-                        .and()
-                        .withCookieParam().withName("my-cookie-data")
-                        .and()
+        restApi.endpoint(
+                endpointPath(NAME_SPACE + "/post").withDescription("Hammer REST API exposing all Message utilities"), (q, a) -> {
+                    System.out.println("Message endpoint");
+                }).post(path("/post")
+                        .withDescription("Return the message from the JSON body")
                         .withResponseType(Message.class), new Route() {
                     @Override
                     public Object onRequest(Request request, Response response) {
+                        System.out.println("POST Message");
+                        final Message network = new Message("Network Data");
 
-                        Message network = new Message("Network Data");
-
-                        return ok(response, network);
+                        return ok(response, network.toString());
                     }
                 });
     }

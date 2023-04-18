@@ -38,3 +38,27 @@ collection.createIndex({ nom: 'text' });
 __see code changeStream.js__
 
 # Sharding Note
+
+Pour partitionner une collection, vous devez spécifier l'espace de noms complet de la collection que vous souhaitez partitionner et la clé de partition. Vous pouvez utiliser le
+````bash
+db.runCommand( { shardCollection: "<namespace>", key: <keyPattern> } )
+````
+
+Lorsque vous choisissez votre clé de partitionnement, pensez à :
+
+le
+cardinalité
+de la clé fragmentée
+
+le
+fréquence
+avec lesquelles les valeurs de clé de partition se produisent
+
+si une clé de partition potentielle grandit
+de manière monotone
+
+Partage des modèles de requête
+
+Limitations des clés de partition
+
+<img src="https://geekflare.com/wp-content/uploads/2020/07/MongoDb-Sharding-Architecture.png">

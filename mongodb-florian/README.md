@@ -33,4 +33,8 @@ Les index de type search, également appelés index textuels, sont des types d'i
 collection.createIndex({ nom: 'text' });
 ````
 
+# Change Stream
+
+__see code changeStream.js__
+
 # Sharding Note

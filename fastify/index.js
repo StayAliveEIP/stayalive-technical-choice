@@ -97,6 +97,12 @@ fastify.register(async function (fastify, opts) {
         done()
     }
 
+
+
+
+
+
+
     fastify.post('/check-chicken', {
         schema: {
             body: {
